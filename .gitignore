@@ -1,0 +1,11 @@
+# Configurações locais do Claude
+.claude/
+
+# Backups exportados do painel
+mypanel-backup-*.json
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
