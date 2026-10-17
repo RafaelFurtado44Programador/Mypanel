@@ -14,22 +14,66 @@
 
   const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
 
+  /* Blocos padrão. Cada um tem uma chave "seed" estável: quando um bloco padrão novo é
+     adicionado aqui e SEED_VERSION aumenta, ele aparece também em painéis que já têm dados. */
+  const SEED_VERSION = 2;
+  const GH = "https://github.com/RafaelFurtado44Programador";
+  const DEFAULT_CATEGORIES = ["Perfil pessoal", "Projetos", "Aplicações", "Ferramentas", "Sites", "Anotações"];
+  const DEFAULT_TILES = [
+    // Perfil pessoal
+    { seed: "perfil-github", title: "Meu GitHub", desc: "Perfil e repositórios", url: GH, category: "Perfil pessoal", color: "#4b5670", icon: { kind: "svg", value: "code" } },
+    { seed: "perfil-instagram", title: "Instagram", desc: "@faelfurtado__", url: "https://www.instagram.com/faelfurtado__/", category: "Perfil pessoal", color: "#b0408f", icon: { kind: "svg", value: "camera" } },
+    // Projetos
+    { seed: "locacar-app", title: "Locacar", desc: "Gestão de frota · EGS Locadora", url: "http://localhost:3000", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "car" } },
+    { seed: "locacar-repo", title: "Locacar · código", desc: "Repositório no GitHub", url: GH + "/locacar", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "git" } },
+    { seed: "bebetter-app", title: "BeBetter", desc: "Agenda, hábitos e modo BeBetter", url: "http://localhost:8081", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "check" } },
+    { seed: "bebetter-repo", title: "BeBetter · código", desc: "Repositório no GitHub", url: GH + "/BeBetter", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "git" } },
+    { seed: "mypanel-repo", title: "MyPanel · código", desc: "Repositório deste painel", url: GH + "/Mypanel", category: "Projetos", color: "#7b4fc4", icon: { kind: "svg", value: "git" } },
+    // Aplicações
+    { seed: "gmail", title: "Gmail", desc: "Caixa de entrada", url: "https://mail.google.com", category: "Aplicações", color: "#c2364f", icon: { kind: "svg", value: "mail" } },
+    { seed: "drive", title: "Google Drive", desc: "Arquivos e documentos", url: "https://drive.google.com", category: "Aplicações", color: "#2f8f5b", icon: { kind: "svg", value: "cloud" } },
+    { seed: "whatsapp", title: "WhatsApp Web", desc: "Mensagens", url: "https://web.whatsapp.com", category: "Aplicações", color: "#0b8ea3", icon: { kind: "svg", value: "chat" } },
+    // Ferramentas
+    { seed: "github", title: "GitHub", desc: "Página inicial", url: "https://github.com", category: "Ferramentas", color: "#4b5670", icon: { kind: "svg", value: "git" } },
+    { seed: "claude", title: "Claude", desc: "Assistente de IA", url: "https://claude.ai", category: "Ferramentas", color: "#d4572a", icon: { kind: "svg", value: "sparkle" } },
+    // Sites
+    { seed: "youtube", title: "YouTube", desc: "Vídeos e aulas", url: "https://www.youtube.com", category: "Sites", color: "#c2364f", icon: { kind: "svg", value: "video" } },
+    // Anotações
+    { seed: "nota-boas-vindas", type: "note", title: "Ideias e lembretes", category: "Anotações", color: "#d18a16", icon: { kind: "svg", value: "note" }, size: "2",
+      note: "Bem-vindo ao seu painel!\n• Clique em um bloco para abrir o link.\n• Botão direito em um bloco (ou o modo Organizar) para editar.\n• Exporte um backup de vez em quando pelo menu ⋮." }
+  ];
+
+  const makeTile = t => ({ type: "link", desc: "", url: "", size: "1", newTab: true, note: "", ...t, id: uid(), icon: { ...t.icon } });
+
   const SAMPLE = () => ({
     version: 1,
+    seedVersion: SEED_VERSION,
+    removedSeeds: [],
     title: "MyPanel",
-    categories: ["Aplicações", "Ferramentas", "Sites", "Anotações"],
-    tiles: [
-      { id: uid(), type: "link", title: "Gmail", desc: "Caixa de entrada", url: "https://mail.google.com", category: "Aplicações", color: "#c2364f", icon: { kind: "svg", value: "mail" }, size: "1", newTab: true },
-      { id: uid(), type: "link", title: "Google Drive", desc: "Arquivos e documentos", url: "https://drive.google.com", category: "Aplicações", color: "#2f8f5b", icon: { kind: "svg", value: "cloud" }, size: "1", newTab: true },
-      { id: uid(), type: "link", title: "WhatsApp Web", desc: "Mensagens", url: "https://web.whatsapp.com", category: "Aplicações", color: "#0b8ea3", icon: { kind: "svg", value: "chat" }, size: "1", newTab: true },
-      { id: uid(), type: "link", title: "GitHub", desc: "Repositórios e projetos", url: "https://github.com", category: "Ferramentas", color: "#4b5670", icon: { kind: "svg", value: "git" }, size: "1", newTab: true },
-      { id: uid(), type: "link", title: "Claude", desc: "Assistente de IA", url: "https://claude.ai", category: "Ferramentas", color: "#d4572a", icon: { kind: "svg", value: "sparkle" }, size: "1", newTab: true },
-      { id: uid(), type: "link", title: "Servidor local", desc: "Projeto em desenvolvimento", url: "http://localhost:3000", category: "Ferramentas", color: "#7b4fc4", icon: { kind: "svg", value: "server" }, size: "1", newTab: true },
-      { id: uid(), type: "link", title: "YouTube", desc: "Vídeos e aulas", url: "https://www.youtube.com", category: "Sites", color: "#c2364f", icon: { kind: "svg", value: "video" }, size: "1", newTab: true },
-      { id: uid(), type: "note", title: "Ideias e lembretes", desc: "", url: "", category: "Anotações", color: "#d18a16", icon: { kind: "svg", value: "note" }, size: "2", newTab: true,
-        note: "Bem-vindo ao seu painel!\n• Clique em um bloco para abrir o link.\n• Botão direito em um bloco (ou o modo Organizar) para editar.\n• Exporte um backup de vez em quando pelo menu ⋮." }
-    ]
+    categories: [...DEFAULT_CATEGORIES],
+    tiles: DEFAULT_TILES.map(makeTile)
   });
+
+  /* Acrescenta a um painel existente os blocos padrão que surgiram depois que ele foi criado,
+     sem mexer nos blocos do usuário nem recriar os que ele excluiu. */
+  function migrate(data) {
+    if ((data.seedVersion || 1) >= SEED_VERSION) return false;
+    const have = new Set(data.tiles.map(t => t.seed).filter(Boolean));
+    const urls = new Set(data.tiles.map(t => (t.url || "").replace(/\/+$/, "")));
+    const removed = new Set(data.removedSeeds || []);
+    DEFAULT_TILES.forEach(t => {
+      if (have.has(t.seed) || removed.has(t.seed)) return;
+      if (t.url && urls.has(t.url.replace(/\/+$/, ""))) return; // já existe um bloco com esse endereço
+      if (!(data.seedVersion > 1) && !["Perfil pessoal", "Projetos"].includes(t.category)) return;
+      data.tiles.push(makeTile(t));
+      if (!data.categories.includes(t.category)) {
+        const at = Math.min(DEFAULT_CATEGORIES.indexOf(t.category), data.categories.length);
+        data.categories.splice(Math.max(0, at), 0, t.category);
+      }
+    });
+    data.seedVersion = SEED_VERSION;
+    return true;
+  }
 
   /* ---------- Estado ---------- */
   let state = load();
@@ -67,7 +111,10 @@
       const raw = localStorage.getItem(STORE_KEY);
       if (raw) {
         const data = sanitize(JSON.parse(raw));
-        if (data) return data;
+        if (data) {
+          if (migrate(data)) { try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (_) {} }
+          return data;
+        }
       }
     } catch (_) { /* armazenamento indisponível */ }
     return SAMPLE();
@@ -92,11 +139,19 @@
       icon: t.icon && t.icon.kind ? { kind: String(t.icon.kind), value: String(t.icon.value || "") } : { kind: "svg", value: "link" },
       size: t.size === "2" ? "2" : "1",
       newTab: t.newTab !== false,
-      note: String(t.note || "")
+      note: String(t.note || ""),
+      ...(t.seed ? { seed: String(t.seed) } : {})
     }));
     tiles.forEach(t => { if (!cats.includes(t.category)) cats.push(t.category); });
     if (!cats.length) cats.push(FALLBACK_CAT);
-    return { version: 1, title: String(data.title || "MyPanel").slice(0, 30), categories: cats, tiles };
+    return {
+      version: 1,
+      seedVersion: Number(data.seedVersion) || 1,
+      removedSeeds: Array.isArray(data.removedSeeds) ? data.removedSeeds.map(String) : [],
+      title: String(data.title || "MyPanel").slice(0, 30),
+      categories: cats,
+      tiles
+    };
   }
 
   /* ---------- Utilidades ---------- */
@@ -384,13 +439,13 @@
       if (!resetArmed) {
         resetArmed = true;
         b.textContent = "Clique de novo para confirmar";
-        setTimeout(() => { resetArmed = false; b.textContent = "Restaurar exemplo"; }, 3000);
+        setTimeout(() => { resetArmed = false; b.textContent = "Restaurar padrão"; }, 3000);
         return;
       }
       resetArmed = false;
-      b.textContent = "Restaurar exemplo";
+      b.textContent = "Restaurar padrão";
       state = SAMPLE(); filter = "Todos"; save(); render(); closeMenu();
-      toast("Painel restaurado com os blocos de exemplo");
+      toast("Painel restaurado com os blocos padrão");
       return;
     }
     closeMenu();
@@ -429,6 +484,7 @@
       try {
         const data = sanitize(JSON.parse(reader.result));
         if (!data) throw new Error("formato");
+        migrate(data);
         state = data; filter = "Todos"; save(); render();
         toast(`Backup importado: ${data.tiles.length} blocos`);
       } catch (_) {
@@ -586,6 +642,7 @@
   el.deleteNo.addEventListener("click", () => { el.deleteBtn.hidden = false; el.deleteConfirm.hidden = true; });
   el.deleteYes.addEventListener("click", () => {
     const name = draft.title;
+    if (draft.seed && !state.removedSeeds.includes(draft.seed)) state.removedSeeds.push(draft.seed);
     state.tiles = state.tiles.filter(t => t.id !== draft.id);
     save();
     el.editor.close();
