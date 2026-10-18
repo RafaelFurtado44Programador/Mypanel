@@ -14,23 +14,24 @@
 
   const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
 
-  /* Blocos padrão. Cada um tem uma chave "seed" estável: quando um bloco padrão novo é
-     adicionado aqui e SEED_VERSION aumenta, ele aparece também em painéis que já têm dados. */
-  const SEED_VERSION = 2;
+  /* Blocos padrão. Cada um tem uma chave "seed" estável e a versão em que surgiu ("since"):
+     quando SEED_VERSION aumenta, os blocos novos aparecem também em painéis que já têm dados. */
+  const SEED_VERSION = 3;
   const GH = "https://github.com/RafaelFurtado44Programador";
   const DEFAULT_CATEGORIES = ["Perfil pessoal", "Projetos", "Aplicações", "Ferramentas", "Sites", "Anotações"];
   const DEFAULT_TILES = [
     // Perfil pessoal
-    { seed: "perfil-github", title: "Meu GitHub", desc: "Perfil e repositórios", url: GH, category: "Perfil pessoal", color: "#4b5670", icon: { kind: "svg", value: "code" } },
-    { seed: "perfil-instagram", title: "Instagram", desc: "@faelfurtado__", url: "https://www.instagram.com/faelfurtado__/", category: "Perfil pessoal", color: "#b0408f", icon: { kind: "svg", value: "camera" } },
+    { seed: "perfil-github", since: 2, title: "Meu GitHub", desc: "Perfil e repositórios", url: GH, category: "Perfil pessoal", color: "#4b5670", icon: { kind: "svg", value: "code" } },
+    { seed: "perfil-instagram", since: 2, title: "Instagram", desc: "@faelfurtado__", url: "https://www.instagram.com/faelfurtado__/", category: "Perfil pessoal", color: "#b0408f", icon: { kind: "svg", value: "camera" } },
     // Projetos
-    { seed: "locacar-app", title: "Locacar", desc: "Gestão de frota · EGS Locadora", url: "http://localhost:3000", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "car" } },
-    { seed: "locacar-repo", title: "Locacar · código", desc: "Repositório no GitHub", url: GH + "/locacar", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "git" } },
-    { seed: "bebetter-app", title: "BeBetter", desc: "Agenda, hábitos e modo BeBetter", url: "http://localhost:8081", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "check" } },
-    { seed: "bebetter-repo", title: "BeBetter · código", desc: "Repositório no GitHub", url: GH + "/BeBetter", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "git" } },
-    { seed: "mypanel-repo", title: "MyPanel · código", desc: "Repositório deste painel", url: GH + "/Mypanel", category: "Projetos", color: "#7b4fc4", icon: { kind: "svg", value: "git" } },
+    { seed: "locacar-app", since: 2, title: "Locacar", desc: "Gestão de frota · EGS Locadora", url: "http://localhost:3000", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "car" } },
+    { seed: "locacar-repo", since: 2, title: "Locacar · código", desc: "Repositório no GitHub", url: GH + "/locacar", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "git" } },
+    { seed: "bebetter-app", since: 2, title: "BeBetter", desc: "Agenda, hábitos e modo BeBetter", url: "http://localhost:8081", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "check" } },
+    { seed: "bebetter-repo", since: 2, title: "BeBetter · código", desc: "Repositório no GitHub", url: GH + "/BeBetter", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "git" } },
+    { seed: "mypanel-repo", since: 2, title: "MyPanel · código", desc: "Repositório deste painel", url: GH + "/Mypanel", category: "Projetos", color: "#7b4fc4", icon: { kind: "svg", value: "git" } },
     // Aplicações
     { seed: "gmail", title: "Gmail", desc: "Caixa de entrada", url: "https://mail.google.com", category: "Aplicações", color: "#c2364f", icon: { kind: "svg", value: "mail" } },
+    { seed: "google-agenda", since: 3, title: "Google Agenda", desc: "Compromissos e lembretes", url: "https://calendar.google.com/calendar/r", category: "Aplicações", color: "#264f8f", icon: { kind: "svg", value: "calendar" } },
     { seed: "drive", title: "Google Drive", desc: "Arquivos e documentos", url: "https://drive.google.com", category: "Aplicações", color: "#2f8f5b", icon: { kind: "svg", value: "cloud" } },
     { seed: "whatsapp", title: "WhatsApp Web", desc: "Mensagens", url: "https://web.whatsapp.com", category: "Aplicações", color: "#0b8ea3", icon: { kind: "svg", value: "chat" } },
     // Ferramentas
@@ -39,11 +40,11 @@
     // Sites
     { seed: "youtube", title: "YouTube", desc: "Vídeos e aulas", url: "https://www.youtube.com", category: "Sites", color: "#c2364f", icon: { kind: "svg", value: "video" } },
     // Anotações
-    { seed: "nota-boas-vindas", type: "note", title: "Ideias e lembretes", category: "Anotações", color: "#d18a16", icon: { kind: "svg", value: "note" }, size: "2",
+    { seed: "nota-boas-vindas", type: "note", title: "Ideias e lembretes", category: "Anotações", color: "#d18a16", icon: { kind: "svg", value: "note" }, size: "2", pinned: true,
       note: "Bem-vindo ao seu painel!\n• Clique em um bloco para abrir o link.\n• Botão direito em um bloco (ou o modo Organizar) para editar.\n• Exporte um backup de vez em quando pelo menu ⋮." }
   ];
 
-  const makeTile = t => ({ type: "link", desc: "", url: "", size: "1", newTab: true, note: "", ...t, id: uid(), icon: { ...t.icon } });
+  const makeTile = ({ since, ...t }) => ({ type: "link", desc: "", url: "", size: "1", newTab: true, note: "", pinned: false, ...t, id: uid(), icon: { ...t.icon } });
 
   const SAMPLE = () => ({
     version: 1,
@@ -57,20 +58,22 @@
   /* Acrescenta a um painel existente os blocos padrão que surgiram depois que ele foi criado,
      sem mexer nos blocos do usuário nem recriar os que ele excluiu. */
   function migrate(data) {
-    if ((data.seedVersion || 1) >= SEED_VERSION) return false;
+    const from = data.seedVersion || 1;
+    if (from >= SEED_VERSION) return false;
     const have = new Set(data.tiles.map(t => t.seed).filter(Boolean));
     const urls = new Set(data.tiles.map(t => (t.url || "").replace(/\/+$/, "")));
     const removed = new Set(data.removedSeeds || []);
     DEFAULT_TILES.forEach(t => {
+      if ((t.since || 1) <= from) return; // o painel já nasceu com este bloco
       if (have.has(t.seed) || removed.has(t.seed)) return;
       if (t.url && urls.has(t.url.replace(/\/+$/, ""))) return; // já existe um bloco com esse endereço
-      if (!(data.seedVersion > 1) && !["Perfil pessoal", "Projetos"].includes(t.category)) return;
       data.tiles.push(makeTile(t));
       if (!data.categories.includes(t.category)) {
         const at = Math.min(DEFAULT_CATEGORIES.indexOf(t.category), data.categories.length);
         data.categories.splice(Math.max(0, at), 0, t.category);
       }
     });
+    if (from < 3) data.tiles.forEach(t => { if (t.type === "note") t.pinned = true; }); // notas vão para o topo
     data.seedVersion = SEED_VERSION;
     return true;
   }
@@ -102,7 +105,8 @@
     noteSaved: $("#noteSaved"), noteCopy: $("#noteCopy"), noteEdit: $("#noteEdit"),
     catDialog: $("#catDialog"), catList: $("#catList"), catAdd: $("#catAdd"), catNew: $("#catNew"),
     renameDialog: $("#renameDialog"), renameForm: $("#renameForm"), renameInput: $("#renameInput"),
-    importFile: $("#importFile"), toast: $("#toast")
+    importFile: $("#importFile"), toast: $("#toast"),
+    topRow: $("#topRow"), topNotes: $("#topNotes"), addNoteBtn: $("#addNoteBtn"), fPinned: $("#fPinned")
   };
 
   /* ---------- Persistência ---------- */
@@ -140,6 +144,7 @@
       size: t.size === "2" ? "2" : "1",
       newTab: t.newTab !== false,
       note: String(t.note || ""),
+      pinned: t.pinned === true,
       ...(t.seed ? { seed: String(t.seed) } : {})
     }));
     tiles.forEach(t => { if (!cats.includes(t.category)) cats.push(t.category); });
@@ -241,7 +246,7 @@
       </span>`;
   }
 
-  function buildTile(t) {
+  function buildTile(t, { top = false } = {}) {
     const isLink = t.type === "link";
     const node = document.createElement(isLink && !editing ? "a" : "button");
     node.className = "tile" + (t.size === "2" ? " wide" : "");
@@ -255,7 +260,7 @@
     }
     node.setAttribute("aria-label", `${t.title}${isLink ? ", abrir " + hostOf(t.url) : ", abrir nota"}`);
     node.innerHTML = tileMarkup(t);
-    if (editing) node.draggable = true;
+    if (editing && !top) node.draggable = true;
     return node;
   }
 
@@ -281,8 +286,25 @@
       return `<button type="button" class="chip" data-cat="${esc(c)}" aria-pressed="${c === filter}">${esc(c)} <b>${n}</b></button>`;
     }).join("");
 
+    // topo: anotações fixadas + agenda (só na visão geral, sem filtro nem busca)
+    const showTop = filter === "Todos" && !query.trim();
+    const pinned = state.tiles.filter(t => t.type === "note" && t.pinned);
+    el.topRow.hidden = !showTop;
+    el.topNotes.innerHTML = "";
+    if (showTop) {
+      pinned.forEach(t => el.topNotes.appendChild(buildTile(t, { top: true })));
+      if (!pinned.length) {
+        const add = document.createElement("button");
+        add.type = "button";
+        add.className = "tile add-tile";
+        add.dataset.addNote = "";
+        add.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Nova anotação</span>`;
+        el.topNotes.appendChild(add);
+      }
+    }
+
     // grade
-    const list = visibleTiles();
+    const list = visibleTiles().filter(t => !(showTop && t.type === "note" && t.pinned));
     el.board.innerHTML = "";
     el.board.classList.toggle("editing", editing);
     const grouped = filter === "Todos" && !query.trim();
@@ -301,7 +323,7 @@
       list.forEach(t => el.board.appendChild(buildTile(t)));
     }
 
-    if (list.length && !query.trim()) {
+    if ((list.length || showTop) && !query.trim()) {
       const add = document.createElement("button");
       add.type = "button";
       add.className = "tile add-tile";
@@ -311,7 +333,7 @@
     }
 
     bindFaviconFallback(el.board);
-    el.empty.hidden = list.length > 0;
+    el.empty.hidden = list.length > 0 || showTop;
     if (!list.length && query.trim()) {
       $(".empty-title", el.empty).textContent = `Nada encontrado para "${query.trim()}"`;
     } else {
@@ -323,9 +345,13 @@
   }
 
   /* ---------- Grade: cliques e arrastar ---------- */
-  el.board.addEventListener("click", e => {
+  function onTileClick(e) {
     const add = e.target.closest(".add-tile");
-    if (add) { openEditor(null, add.dataset.add || undefined); return; }
+    if (add) {
+      if (add.dataset.addNote !== undefined) newNote();
+      else openEditor(null, add.dataset.add || undefined);
+      return;
+    }
     const node = e.target.closest(".tile[data-id]");
     if (!node) return;
     const t = state.tiles.find(x => x.id === node.dataset.id);
@@ -333,15 +359,25 @@
     if (editing) { e.preventDefault(); openEditor(t); return; }
     if (t.type === "note") openNote(t);
     else if (!t.url) { e.preventDefault(); openEditor(t); }
-  });
+  }
 
-  el.board.addEventListener("contextmenu", e => {
+  function onTileContext(e) {
     const node = e.target.closest(".tile[data-id]");
     if (!node) return;
     e.preventDefault();
     const t = state.tiles.find(x => x.id === node.dataset.id);
     if (t) openEditor(t);
+  }
+
+  function newNote() {
+    openEditor(null, state.categories.includes("Anotações") ? "Anotações" : undefined, "note");
+  }
+
+  [el.board, el.topNotes].forEach(c => {
+    c.addEventListener("click", onTileClick);
+    c.addEventListener("contextmenu", onTileContext);
   });
+  el.addNoteBtn.addEventListener("click", newNote);
 
   let dragId = null;
   el.board.addEventListener("dragstart", e => {
@@ -496,13 +532,14 @@
   });
 
   /* ---------- Editor ---------- */
-  function openEditor(tile, presetCat) {
+  function openEditor(tile, presetCat, presetType) {
     draftIsNew = !tile;
     draft = tile ? JSON.parse(JSON.stringify(tile)) : {
-      id: uid(), type: "link", title: "", desc: "", url: "",
+      id: uid(), type: presetType === "note" ? "note" : "link", title: "", desc: "", url: "",
       category: presetCat || state.categories[0] || FALLBACK_CAT,
       color: COLORS[state.tiles.length % COLORS.length],
-      icon: { kind: "svg", value: "globe" }, size: "1", newTab: true, note: ""
+      icon: { kind: "svg", value: presetType === "note" ? "note" : "globe" }, size: presetType === "note" ? "2" : "1",
+      newTab: true, note: "", pinned: presetType === "note"
     };
 
     el.editorTitle.textContent = draftIsNew ? "Novo bloco" : "Editar bloco";
@@ -518,6 +555,7 @@
     el.fSize.value = draft.size;
     el.fNote.value = draft.note || "";
     el.fNewTab.checked = draft.newTab;
+    el.fPinned.checked = !!draft.pinned;
     el.fEmoji.value = draft.icon.kind === "emoji" ? draft.icon.value : "";
     el.fUrl.removeAttribute("aria-invalid");
     el.urlErr.hidden = true;
@@ -566,7 +604,10 @@
 
   el.form.addEventListener("input", e => {
     const t = e.target;
-    if (t.name === "type") draft.type = t.value;
+    if (t.name === "type") {
+      draft.type = t.value;
+      if (draftIsNew) { draft.pinned = draft.type === "note"; el.fPinned.checked = draft.pinned; }
+    }
     if (t === el.fTitle) draft.title = t.value;
     if (t === el.fUrl) { draft.url = t.value; el.fUrl.removeAttribute("aria-invalid"); el.urlErr.hidden = true; }
     if (t === el.fDesc) draft.desc = t.value;
@@ -593,6 +634,7 @@
     if (e.target === el.fCategory) draft.category = e.target.value;
     if (e.target === el.fSize) draft.size = e.target.value;
     if (e.target === el.fNewTab) draft.newTab = e.target.checked;
+    if (e.target === el.fPinned) draft.pinned = e.target.checked;
     syncEditor();
   });
 
@@ -756,6 +798,7 @@
     const date = d.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
     el.today.textContent = `${hi} · ${date.charAt(0).toUpperCase()}${date.slice(1)}`;
   }
+  window.MyPanel = { toast };
   paintDate();
   setInterval(paintDate, 60 * 1000);
 

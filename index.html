@@ -59,6 +59,26 @@
 
     <p class="edit-hint" id="editHint" hidden>Modo organizar: arraste os blocos para mudar a ordem. Clique em um bloco para editar.</p>
 
+    <section class="top-row" id="topRow" aria-label="Anotações e agenda">
+      <div class="top-col notes-col">
+        <div class="col-head">
+          <h2 class="group-title">Anotações</h2>
+          <button type="button" class="btn ghost mini" id="addNoteBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Nova anotação</span></button>
+        </div>
+        <div class="top-notes" id="topNotes"></div>
+      </div>
+      <div class="top-col agenda-col">
+        <div class="col-head">
+          <h2 class="group-title">Agenda</h2>
+          <span class="agenda-status" id="agendaStatus"></span>
+          <button type="button" class="btn ghost mini icon-only" id="agendaRefresh" aria-label="Atualizar agenda" title="Atualizar agenda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.7 4.4L20 16"/><path d="M20 20v-4h-4"/></svg></button>
+          <a class="btn ghost mini" href="https://calendar.google.com/calendar/r" target="_blank" rel="noopener noreferrer" title="Abrir o Google Agenda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span>Google Agenda</span></a>
+          <button type="button" class="btn ghost mini icon-only" id="agendaSettings" aria-label="Conectar agendas" title="Conectar agendas"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg></button>
+        </div>
+        <div class="agenda-card" id="agendaBody" aria-live="polite"></div>
+      </div>
+    </section>
+
     <main id="board" class="board" aria-live="polite"></main>
 
     <div class="empty" id="empty" hidden>
@@ -152,6 +172,11 @@
           <input id="fNewTab" type="checkbox" checked>
           <span>Abrir em nova aba</span>
         </label>
+
+        <label class="check" data-for="note">
+          <input id="fPinned" type="checkbox" checked>
+          <span>Fixar no topo, ao lado da agenda</span>
+        </label>
       </div>
 
       <footer class="sheet-foot">
@@ -232,10 +257,47 @@
     </form>
   </dialog>
 
+  <!-- Google Agenda -->
+  <dialog id="calDialog" class="sheet" aria-labelledby="calTitle">
+    <div class="sheet-head">
+      <h2 id="calTitle">Google Agenda</h2>
+      <button type="button" class="btn ghost icon-only" data-close aria-label="Fechar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="sheet-body">
+      <ul class="cal-list" id="calList" hidden></ul>
+
+      <ol class="cal-steps">
+        <li>Abra as <a href="https://calendar.google.com/calendar/r/settings" target="_blank" rel="noopener noreferrer">configurações do Google Agenda</a>.</li>
+        <li>No menu da esquerda, em <b>Configurações das minhas agendas</b>, clique na agenda que quer trazer.</li>
+        <li>Role até <b>Integrar agenda</b> e copie o <b>Endereço secreto no formato iCal</b>.</li>
+        <li>Cole o endereço aqui embaixo. Para outras agendas, repita com o endereço de cada uma.</li>
+      </ol>
+
+      <form class="cal-add" id="calAdd" novalidate>
+        <label class="field">
+          <span>Endereço secreto no formato iCal</span>
+          <input id="calUrl" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics">
+        </label>
+        <label class="field">
+          <span>Nome <em>opcional</em></span>
+          <input id="calName" type="text" maxlength="30" placeholder="Pessoal">
+        </label>
+        <small class="err" id="calErr" hidden></small>
+        <button class="btn primary" type="submit" id="calSubmit">Conectar agenda</button>
+      </form>
+
+      <p class="hint">O endereço secreto dá acesso de leitura à agenda. Ele fica salvo só neste navegador e não vai para o código, para o backup nem para o GitHub. A agenda só carrega quando o painel roda pelo <b>iniciar.bat</b>.</p>
+    </div>
+  </dialog>
+
   <input type="file" id="importFile" accept="application/json,.json" hidden>
   <div class="toast" id="toast" role="status" hidden></div>
 
   <script src="icons.js"></script>
+  <script src="vendor/ical.min.js"></script>
   <script src="app.js"></script>
+  <script src="agenda.js"></script>
 </body>
 </html>
