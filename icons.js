@@ -34,6 +34,7 @@ window.ICONS = {
   heart:     { label: "Pessoal",       d: '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>' },
   home:      { label: "Casa",          d: '<path d="m3.5 11 8.5-7 8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/>' },
   map:       { label: "Mapa",          d: '<path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/>' },
+  key:       { label: "Chave",         d: '<circle cx="8" cy="15" r="4"/><path d="M10.9 12.1 20 3"/><path d="m16.5 6.5 3 3"/><path d="m14 9 2.5 2.5"/>' },
   lock:      { label: "Senhas",        d: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>' },
   settings:  { label: "Ajustes",       d: '<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>' },
   coffee:    { label: "Pausa",         d: '<path d="M4 9h12.5v5.5A5.5 5.5 0 0 1 11 20h-1.5A5.5 5.5 0 0 1 4 14.5z"/><path d="M16.5 10.5h1.2a2.8 2.8 0 0 1 0 5.6h-1.6"/><path d="M8 3.5c-.6.9-.6 1.6 0 2.5M12 3.5c-.6.9-.6 1.6 0 2.5"/>' },

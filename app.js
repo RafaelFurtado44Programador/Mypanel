@@ -16,7 +16,7 @@
 
   /* Blocos padrão. Cada um tem uma chave "seed" estável e a versão em que surgiu ("since"):
      quando SEED_VERSION aumenta, os blocos novos aparecem também em painéis que já têm dados. */
-  const SEED_VERSION = 3;
+  const SEED_VERSION = 4;
   const GH = "https://github.com/RafaelFurtado44Programador";
   const DEFAULT_CATEGORIES = ["Perfil pessoal", "Projetos", "Aplicações", "Ferramentas", "Sites", "Anotações"];
   const DEFAULT_TILES = [
@@ -28,6 +28,7 @@
     { seed: "locacar-repo", since: 2, title: "Locacar · código", desc: "Repositório no GitHub", url: GH + "/locacar", category: "Projetos", color: "#264f8f", icon: { kind: "svg", value: "git" } },
     { seed: "bebetter-app", since: 2, title: "BeBetter", desc: "Agenda, hábitos e modo BeBetter", url: "http://localhost:8081", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "check" } },
     { seed: "bebetter-repo", since: 2, title: "BeBetter · código", desc: "Repositório no GitHub", url: GH + "/BeBetter", category: "Projetos", color: "#2f8f5b", icon: { kind: "svg", value: "git" } },
+    { seed: "donkey-page", since: 4, title: "donKEY", desc: "Pesquisa e documentos", url: "https://claude.ai/artifact/MTGw9Q5kVqjpH4SEywEnw9", category: "Projetos", color: "#d18a16", icon: { kind: "svg", value: "key" } },
     { seed: "mypanel-repo", since: 2, title: "MyPanel · código", desc: "Repositório deste painel", url: GH + "/Mypanel", category: "Projetos", color: "#7b4fc4", icon: { kind: "svg", value: "git" } },
     // Aplicações
     { seed: "gmail", title: "Gmail", desc: "Caixa de entrada", url: "https://mail.google.com", category: "Aplicações", color: "#c2364f", icon: { kind: "svg", value: "mail" } },
