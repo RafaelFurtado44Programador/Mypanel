@@ -27,6 +27,8 @@ Feito com HTML, CSS e JavaScript puros, sem etapa de build. O servidor local usa
 
 No Windows, dê dois cliques em **`iniciar.bat`**. Ele sobe o servidor do painel em `http://localhost:5500` e abre o navegador. Para parar, feche a janela preta.
 
+**Atalho:** dê dois cliques em **`criar-atalho.bat`** uma única vez. Ele cria o ícone **MyPanel** na Área de Trabalho e no Menu Iniciar. Depois é só abrir o painel por ele. Se mudar a pasta do projeto de lugar, rode o `criar-atalho.bat` de novo.
+
 Pelo terminal, dentro da pasta do projeto:
 
 ```bash
@@ -58,7 +60,9 @@ Mypanel/
 ├── app.js        # blocos, notas, categorias, busca, backup
 ├── agenda.js     # agenda do Google: leitura do iCal, hoje e amanhã
 ├── server.py     # servidor local (arquivos + download da agenda)
-├── iniciar.bat   # atalho para iniciar o servidor no Windows
+├── iniciar.bat   # inicia o servidor e abre o painel no Windows
+├── criar-atalho.bat  # cria o atalho MyPanel na Área de Trabalho e no Menu Iniciar
+├── mypanel.ico   # ícone do atalho
 └── vendor/
     └── ical.min.js  # ical.js 1.5.0 (MPL-2.0), leitor de arquivos iCal
 ```
