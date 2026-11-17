@@ -65,7 +65,7 @@
   const calById = id => calendars.find(c => c.id === id);
 
   const MESSAGES = {
-    no_server: "Abra o painel pelo iniciar.bat para carregar a agenda.",
+    no_server: "A agenda só carrega pelo site do painel ou pelo iniciar.bat no computador.",
     invalid_url: "Use o endereço secreto que começa com https://calendar.google.com/calendar/ical/.",
     upstream: "O Google não encontrou essa agenda. Copie o endereço secreto de novo.",
     offline: "Sem conexão com o Google Agenda agora.",

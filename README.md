@@ -39,16 +39,22 @@ python server.py
 
 > Os dados ficam salvos no `localStorage` do navegador, separados por endereço. Se você abrir pelo arquivo e depois pelo servidor, cada um terá seus próprios blocos. Use **⋮ → Exportar backup** e **Importar backup** para levar os dados de um para o outro.
 
+### No Vercel
+
+O painel também roda como site no Vercel, direto deste repositório: cada `git push` na `main` publica uma versão nova. A pasta `api/` tem a função `ics.js`, que faz no Vercel o mesmo que o `server.py` faz no computador (buscar a agenda do Google). O `.vercelignore` deixa de fora os arquivos que só servem para Windows/Python.
+
+Cada endereço (site no Vercel, `localhost:5500`, arquivo aberto direto) guarda os seus próprios blocos e notas no navegador. Use **⋮ → Exportar backup** e **Importar backup** para levar os dados de um para o outro. Os blocos que apontam para `localhost` (Locacar, BeBetter) só abrem no computador onde esses projetos estão rodando.
+
 ## Conectar o Google Agenda
 
-1. Abra o painel pelo `iniciar.bat`.
+1. Abra o painel pelo site no Vercel ou pelo `iniciar.bat`.
 2. No topo, em **Agenda**, clique em **Conectar Google Agenda** (ou na engrenagem).
 3. No Google Agenda, vá em **Configurações → Configurações das minhas agendas →** sua agenda **→ Integrar agenda** e copie o **Endereço secreto no formato iCal**.
 4. Cole no painel e clique em **Conectar agenda**. Repita para outras agendas, se quiser.
 
 O endereço secreto dá acesso de leitura à agenda, então ele **fica salvo só no navegador**: não vai para o código, para o backup nem para o GitHub. Se algum dia ele vazar, use **Redefinir** na mesma tela do Google para gerar outro.
 
-Por que precisa do servidor? O Google não deixa o navegador baixar o arquivo da agenda direto de uma página (bloqueio de CORS). O `server.py` faz esse download pelo seu computador. Ele só aceita endereços do Google Agenda, só responde para a própria página do painel e só escuta em `127.0.0.1`.
+Por que precisa do servidor? O Google não deixa o navegador baixar o arquivo da agenda direto de uma página (bloqueio de CORS). No computador, o `server.py` faz esse download; no Vercel, a função `api/ics.js`. Os dois só aceitam endereços do Google Agenda e só respondem para a própria página do painel. O `server.py` também só escuta em `127.0.0.1`.
 
 ## Estrutura
 
@@ -60,6 +66,8 @@ Mypanel/
 ├── app.js        # blocos, notas, categorias, busca, backup
 ├── agenda.js     # agenda do Google: leitura do iCal, hoje e amanhã
 ├── server.py     # servidor local (arquivos + download da agenda)
+├── api/ics.js    # função do Vercel que baixa a agenda (o server.py da nuvem)
+├── .vercelignore # o que não vai para o Vercel
 ├── iniciar.bat   # inicia o servidor e abre o painel no Windows
 ├── criar-atalho.bat  # cria o atalho MyPanel na Área de Trabalho e no Menu Iniciar
 ├── mypanel.ico   # ícone do atalho

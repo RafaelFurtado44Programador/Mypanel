@@ -1,0 +1,6 @@
+# Arquivos que só servem para rodar o painel no computador (Windows/Python)
+server.py
+iniciar.bat
+criar-atalho.bat
+mypanel.ico
+README.md
